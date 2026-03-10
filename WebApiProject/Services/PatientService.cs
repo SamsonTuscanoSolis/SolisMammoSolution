@@ -145,7 +145,26 @@ namespace WebApiProject.Services
             return result;
         }
 
-        public Task<InsuranceStatus?> GetInsuranceStatusAsync(int patientId) =>
-            _repository.GetInsuranceStatusAsync(patientId);
+        //public Task<InsuranceStatus?> GetInsuranceStatusAsync(int patientId) =>            _repository.GetInsuranceStatusAsync(patientId);
+
+        public async Task<InsuranceVerificationDto> GetInsurancesAsync(int patientId, string insurancePlanId, string examType, int facilityId)
+        {
+            _logger.LogInformation("Service: Getting insurance status for PatientId {PatientId}, InsurancePlanId {InsurancePlanId}, ExamType {ExamType}, FacilityId {FacilityId}",
+                                   patientId, insurancePlanId, examType, facilityId);
+
+            var insurance = await _repository.GetInsurancesAsync(patientId, insurancePlanId, examType, facilityId);
+
+            if (insurance == null)
+            {
+                _logger.LogWarning("Service: Insurance information not found for PatientId {PatientId}", patientId);
+                return null;
+            }
+
+            var insuranceDto = _mapper.Map<InsuranceVerificationDto>(insurance);
+
+            _logger.LogInformation("Service: Returning insurance status for PatientId {PatientId}", patientId);
+
+            return insuranceDto;
+        }
     }
 }

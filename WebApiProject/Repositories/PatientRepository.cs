@@ -171,9 +171,29 @@ namespace WebApiProject.Repositories
             return communications;
         }
 
-        public async Task<InsuranceStatus?> GetInsuranceStatusAsync(int patientId)
+        //public async Task<InsuranceStatus?> GetInsuranceStatusAsync(int patientId)
+        //{
+        //    return await _context.InsuranceStatuses.FirstOrDefaultAsync(i => i.PatientId == patientId);
+        //}
+
+        public async Task<Insurance> GetInsurancesAsync(int patientId, string insurancePlanId, string examType, int facilityId)
         {
-            return await _context.InsuranceStatuses.FirstOrDefaultAsync(i => i.PatientId == patientId);
+            _logger.LogInformation("Repository: Fetching insurance status for PatientId {PatientId}, InsurancePlanId {InsurancePlanId}, ExamType {ExamType}, FacilityId {FacilityId}",
+                                   patientId, insurancePlanId, examType, facilityId);
+
+            var insurance = await _context.Insurances
+                                          .Where(i => i.PatientId == patientId
+                                                      && i.InsurancePlanId == insurancePlanId
+                                                      && i.ExamType == examType
+                                                      && i.FacilityId == facilityId)
+                                          .FirstOrDefaultAsync();
+
+            if (insurance == null)
+            {
+                _logger.LogWarning("Repository: No insurance found for PatientId {PatientId} with the given parameters.", patientId);
+            }
+
+            return insurance;
         }
     }
 }

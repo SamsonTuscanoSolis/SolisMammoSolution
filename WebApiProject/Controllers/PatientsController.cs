@@ -13,13 +13,11 @@ namespace WebApiProject.Controllers
     public class PatientsController : ControllerBase
     {
         private readonly IPatientService _service;
-        private readonly IMapper _mapper;
         private readonly ILogger<PatientsController> _logger;
 
-        public PatientsController(IPatientService service, IMapper mapper, ILogger<PatientsController> logger)
+        public PatientsController(IPatientService service, ILogger<PatientsController> logger)
         {
             _service = service;
-            _mapper = mapper;
             _logger = logger;
         }
 
@@ -148,13 +146,30 @@ namespace WebApiProject.Controllers
             return Ok(communications);
         }
 
+        //[HttpGet("{patientId}/insurance/verify")]
+        //public async Task<IActionResult> VerifyInsurance(int patientId)
+        //{
+        //    var insurance = await _service.GetInsuranceStatusAsync(patientId);
+        //    if (insurance == null) return NotFound("Insurance information not found");
+        //    return Ok(insurance);
+        //}
+
         [HttpGet("{patientId}/insurance/verify")]
-        public async Task<IActionResult> VerifyInsurance(int patientId)
+        public async Task<IActionResult> VerifyInsurance(int patientId, [FromQuery] string insurancePlanId, [FromQuery] string examType, [FromQuery] int facilityId)
         {
-            var insurance = await _service.GetInsuranceStatusAsync(patientId);
-            if (insurance == null) return NotFound("Insurance information not found");
+            _logger.LogInformation("API request received for verifying insurance for PatientId: {PatientId}", patientId);
+
+            var insurance = await _service.GetInsurancesAsync(patientId, insurancePlanId, examType, facilityId);
+
+            if (insurance == null)
+            {
+                _logger.LogWarning("Insurance information not found for PatientId: {PatientId}", patientId);
+                return NotFound("Insurance information not found");
+            }
+
+            _logger.LogInformation("Insurance verification returned successfully for PatientId: {PatientId}", patientId);
+
             return Ok(insurance);
         }
-
     }
 }

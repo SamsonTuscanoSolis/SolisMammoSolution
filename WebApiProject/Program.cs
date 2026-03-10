@@ -19,6 +19,7 @@ builder.Services.AddAutoMapper(cfg => { }, typeof(PatientProfile).Assembly);
 builder.Services.AddAutoMapper(cfg => { }, typeof(AppointmentProfile).Assembly);
 builder.Services.AddAutoMapper(cfg => { }, typeof(ExamResultProfile).Assembly);
 builder.Services.AddAutoMapper(cfg => { }, typeof(CommunicationProfile).Assembly);
+builder.Services.AddAutoMapper(cfg => { }, typeof(InsuranceProfile).Assembly);
 
 builder.Services.AddControllers();
 

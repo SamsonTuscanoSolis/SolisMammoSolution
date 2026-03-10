@@ -14,6 +14,7 @@ namespace WebApiProject.Services
         Task<IEnumerable<ExamResultDto>> GetResultsAsync(int patientId, int? examId, DateTime? dateFrom, DateTime? dateTo);
         //Task<List<Communication>> GetCommunicationsAsync(int patientId);
         Task<IEnumerable<CommunicationDto>> GetCommunicationsAsync(int patientId, string channel, DateTime? dateFrom, DateTime? dateTo, string campaignId);
-        Task<InsuranceStatus?> GetInsuranceStatusAsync(int patientId);
+        //Task<InsuranceStatus?> GetInsuranceStatusAsync(int patientId);
+        Task<InsuranceVerificationDto> GetInsurancesAsync(int patientId, string insurancePlanId, string examType, int facilityId);
     }
 }
