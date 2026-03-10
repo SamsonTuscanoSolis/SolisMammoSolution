@@ -1,4 +1,5 @@
-﻿using WebApiProject.Models;
+﻿using WebApiProject.DTOs;
+using WebApiProject.Models;
 
 namespace WebApiProject.Repositories
 {
@@ -6,7 +7,8 @@ namespace WebApiProject.Repositories
     {
         //Task<Patient?> GetPatientByIdAsync(int patientId);
         Task<Patient> GetPatientByIdAsync(int patientId, string mrn = null, DateTime? dob = null);
-        Task<List<Patient>> SearchAsync(string? name, int? age, string? disease);
+        Task<IEnumerable<Patient>> SearchPatientsAsync(PatientSearchRequestDto request);
+        //Task<List<Patient>> SearchAsync(string? name, int? age, string? disease);
         //Task<List<Appointment>> GetAppointmentsAsync(int patientId);
         Task<IEnumerable<Appointment>> GetAppointmentsAsync(int patientId, string status, DateTime? dateFrom, DateTime? dateTo);
         //Task<List<ExamResult>> GetResultsAsync(int patientId);

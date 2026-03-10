@@ -8,6 +8,7 @@ namespace WebApiProject.Mappings
     {
         public PatientProfile()
         {
+            CreateMap<Patient, PatientSearchResponseDto>();
             CreateMap<Patient, PatientResponseDto>();
         }
     }

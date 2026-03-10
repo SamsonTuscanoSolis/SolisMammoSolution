@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebApiProject.Data;
+using WebApiProject.DTOs;
 using WebApiProject.Models;
 
 namespace WebApiProject.Repositories
@@ -43,18 +44,37 @@ namespace WebApiProject.Repositories
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<List<Patient>> SearchAsync(string? name, int? age, string? disease)
+        //public async Task<List<Patient>> SearchAsync(string? name, int? age, string? disease)
+        //{
+        //    var query = _context.Patients.AsQueryable();
+
+        //    if (!string.IsNullOrEmpty(name))
+        //        query = query.Where(p => p.Name.Contains(name));
+
+        //    if (age.HasValue)
+        //        query = query.Where(p => p.Age == age.Value);
+
+        //    if (!string.IsNullOrEmpty(disease))
+        //        query = query.Where(p => p.Disease.Contains(disease));
+
+        //    return await query.ToListAsync();
+        //}
+
+        public async Task<IEnumerable<Patient>> SearchPatientsAsync(PatientSearchRequestDto request)
         {
             var query = _context.Patients.AsQueryable();
 
-            if (!string.IsNullOrEmpty(name))
-                query = query.Where(p => p.Name.Contains(name));
+            if (!string.IsNullOrEmpty(request.FirstName))
+                query = query.Where(p => p.FirstName.Contains(request.FirstName));
 
-            if (age.HasValue)
-                query = query.Where(p => p.Age == age.Value);
+            if (!string.IsNullOrEmpty(request.LastName))
+                query = query.Where(p => p.LastName.Contains(request.LastName));
 
-            if (!string.IsNullOrEmpty(disease))
-                query = query.Where(p => p.Disease.Contains(disease));
+            if (request.Dob.HasValue)
+                query = query.Where(p => p.Dob == request.Dob);
+
+            if (!string.IsNullOrEmpty(request.Mrn))
+                query = query.Where(p => p.Mrn == request.Mrn);
 
             return await query.ToListAsync();
         }

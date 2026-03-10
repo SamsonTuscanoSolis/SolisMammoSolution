@@ -76,10 +76,26 @@ namespace WebApiProject.Controllers
         }
 
         [HttpGet("search")]
-        public async Task<IActionResult> SearchPatients([FromQuery] string? name, [FromQuery] int? age, [FromQuery] string? disease)
+        public async Task<IActionResult> SearchPatients([FromQuery] PatientSearchRequestDto request)
         {
-            var results = await _service.SearchPatientsAsync(name, age, disease);
-            if (!results.Any()) return NotFound("No patients found matching the search criteria");
+            int paramCount = 0;
+
+            if (!string.IsNullOrEmpty(request.FirstName)) paramCount++;
+            if (!string.IsNullOrEmpty(request.LastName)) paramCount++;
+            if (request.Dob.HasValue) paramCount++;
+            if (!string.IsNullOrEmpty(request.Phone)) paramCount++;
+            if (!string.IsNullOrEmpty(request.Email)) paramCount++;
+            if (!string.IsNullOrEmpty(request.Mrn)) paramCount++;
+            if (!string.IsNullOrEmpty(request.InsuranceId)) paramCount++;
+
+            if (paramCount < 2)
+                return BadRequest("At least two search parameters are required.");
+
+            var results = await _service.SearchPatientsAsync(request);
+
+            if (!results.Any())
+                return NotFound("No patients found matching the search criteria");
+
             return Ok(results);
         }
 

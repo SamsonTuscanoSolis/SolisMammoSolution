@@ -54,8 +54,12 @@ namespace WebApiProject.Services
             return patientDto;
         }
 
-        public Task<List<Patient>> SearchPatientsAsync(string? name, int? age, string? disease) =>
-            _repository.SearchAsync(name, age, disease);
+        public async Task<IEnumerable<PatientSearchResponseDto>> SearchPatientsAsync(PatientSearchRequestDto request)
+        {
+            var patients = await _repository.SearchPatientsAsync(request);
+
+            return _mapper.Map<IEnumerable<PatientSearchResponseDto>>(patients);
+        }
 
         public async Task<IEnumerable<AppointmentDto>> GetAppointmentsAsync(int patientId, string status, DateTime? dateFrom, DateTime? dateTo)
         {

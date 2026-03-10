@@ -7,7 +7,8 @@ namespace WebApiProject.Services
     {
         //Task<Patient?> GetPatientByIdAsync(int patientId);
         Task<PatientResponseDto> GetPatientByIdAsync(int patientId, string mrn = null, DateTime? dob = null);
-        Task<List<Patient>> SearchPatientsAsync(string? name, int? age, string? disease);
+        //Task<List<Patient>> SearchPatientsAsync(string? name, int? age, string? disease);
+        Task<IEnumerable<PatientSearchResponseDto>> SearchPatientsAsync(PatientSearchRequestDto request);
         //Task<List<Appointment>> GetAppointmentsAsync(int patientId);
         Task<IEnumerable<AppointmentDto>> GetAppointmentsAsync(int patientId, string status, DateTime? dateFrom, DateTime? dateTo);
         //Task<List<ExamResult>> GetResultsAsync(int patientId);
