@@ -1,0 +1,6 @@
+@WebApiProject_HostAddress = http://localhost:5162
+
+GET {{WebApiProject_HostAddress}}/api/v{version:apiVersion}/facilities/
+Accept: application/json
+
+###
