@@ -21,6 +21,12 @@ builder.Services.AddAutoMapper(cfg => { }, typeof(ExamResultProfile).Assembly);
 builder.Services.AddAutoMapper(cfg => { }, typeof(CommunicationProfile).Assembly);
 builder.Services.AddAutoMapper(cfg => { }, typeof(InsuranceProfile).Assembly);
 
+
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+
+builder.Services.AddAutoMapper(cfg => { }, typeof(OrderProfile).Assembly);
+
 builder.Services.AddControllers();
 
 builder.Services.AddApiVersioning(options =>

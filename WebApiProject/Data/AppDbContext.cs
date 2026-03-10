@@ -12,6 +12,9 @@ namespace WebApiProject.Data
         public DbSet<ExamResult> ExamResults => Set<ExamResult>();
         public DbSet<Communication> Communications => Set<Communication>();
         public DbSet<Insurance> Insurances => Set<Insurance>();
+
+        public DbSet<Order> Orders => Set<Order>();
+        public DbSet<OrderItem> OrderItems => Set<OrderItem>();
     }
 
 }

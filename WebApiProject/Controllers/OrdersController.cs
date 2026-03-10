@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApiProject.Services;
 
 namespace WebApiProject.Controllers
 {
@@ -9,30 +10,30 @@ namespace WebApiProject.Controllers
     [Route("api/v{version:apiVersion}/orders")]
     public class OrdersController : ControllerBase
     {
+        private readonly IOrderService _service;
+        private readonly ILogger<OrdersController> _logger;
+
+        public OrdersController(IOrderService service, ILogger<OrdersController> logger)
+        {
+            _service = service;
+            _logger = logger;
+        }
+
         // GET /api/v1/orders/{orderId}
         [HttpGet("{orderId}")]
-        public IActionResult GetOrder(int orderId)
+        public async Task<IActionResult> GetOrder(int orderId)
         {
-            // Sample mock order data
-            var order = new
-            {
-                OrderId = orderId,
-                PatientId = 1,
-                Items = new[]
-                {
-                    new { ItemId = 101, Name = "Blood Test", Quantity = 1, Price = 50.00 },
-                    new { ItemId = 102, Name = "X-Ray", Quantity = 1, Price = 100.00 }
-                },
-                TotalAmount = 150.00,
-                Status = "Completed",
-                OrderDate = "2026-03-06"
-            };
+            _logger.LogInformation("API request received for OrderId: {OrderId}", orderId);
+
+            var order = await _service.GetOrderAsync(orderId);
 
             if (order == null)
             {
+                _logger.LogWarning("Order with OrderId {OrderId} not found", orderId);
                 return NotFound("Order not found");
             }
 
+            _logger.LogInformation("Returning order data for OrderId: {OrderId}", orderId);
             return Ok(order);
         }
     }
