@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApiProject.Services;
 
 namespace WebApiProject.Controllers
 {
@@ -9,33 +10,29 @@ namespace WebApiProject.Controllers
     [Route("api/v{version:apiVersion}/scheduling")]
     public class SchedulingController : ControllerBase
     {
-        // GET /api/v1/scheduling/availability?date=2026-03-10
-        [HttpGet("availability")]
-        public IActionResult GetAvailableSlots([FromQuery] string? date)
-        {
-            // Sample mock available slots
-            var allSlots = new[]
-            {
-                new { SlotId = 1, Time = "09:00 AM", IsAvailable = true },
-                new { SlotId = 2, Time = "10:00 AM", IsAvailable = false },
-                new { SlotId = 3, Time = "11:00 AM", IsAvailable = true },
-                new { SlotId = 4, Time = "01:00 PM", IsAvailable = true },
-                new { SlotId = 5, Time = "02:00 PM", IsAvailable = false },
-            };
+        private readonly ISchedulingService _schedulingService;
+        private readonly ILogger<SchedulingController> _logger;
 
-            // Filter only available slots
-            var availableSlots = allSlots.Where(s => s.IsAvailable);
+        public SchedulingController(ISchedulingService schedulingService, ILogger<SchedulingController> logger)
+        {
+            _schedulingService = schedulingService;
+            _logger = logger;
+        }
+
+        // GET /api/v1/scheduling/availability?facilityId=1&modality=CT&examType=Chest&dateFrom=2026-03-01&dateTo=2026-03-10
+        [HttpGet("availability")]
+        public async Task<IActionResult> GetAvailableSlots([FromQuery] int facilityId, [FromQuery] string modality, [FromQuery] string examType, [FromQuery] DateTime dateFrom, [FromQuery] DateTime dateTo, [FromQuery] int? insurancePlanId)
+        {
+            _logger.LogInformation("Fetching available slots for facilityId {FacilityId}, modality {Modality}, examType {ExamType}, from {DateFrom} to {DateTo}", facilityId, modality, examType, dateFrom, dateTo);
+
+            var availableSlots = await _schedulingService.GetAvailableSlotsAsync(facilityId, modality, examType, dateFrom, dateTo, insurancePlanId);
 
             if (!availableSlots.Any())
             {
-                return NotFound("No available slots for the selected date");
+                return NotFound("No available slots found for the selected criteria.");
             }
 
-            return Ok(new
-            {
-                Date = date ?? DateTime.Today.ToString("yyyy-MM-dd"),
-                AvailableSlots = availableSlots
-            });
+            return Ok(new { AvailableSlots = availableSlots });
         }
     }
 }

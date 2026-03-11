@@ -32,6 +32,15 @@ builder.Services.AddScoped<ICampaignService, CampaignService>();
 
 builder.Services.AddAutoMapper(cfg => { }, typeof(OrderProfile).Assembly);
 
+// Register services and repositories
+builder.Services.AddScoped<ISchedulingService, SchedulingService>();
+builder.Services.AddScoped<ISchedulingRepository, SchedulingRepository>();
+
+// Register AutoMapper
+builder.Services.AddAutoMapper(cfg => { }, typeof(SchedulingProfile).Assembly);
+
+
+
 builder.Services.AddControllers();
 
 builder.Services.AddApiVersioning(options =>
