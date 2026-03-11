@@ -1,6 +1,6 @@
 ﻿using WebApiProject.DTOs;
 
-namespace WebApiProject.Services
+namespace WebApiProject.Services.Interface
 {
     public interface IFacilityService
     {

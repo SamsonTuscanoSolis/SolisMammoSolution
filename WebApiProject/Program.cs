@@ -5,6 +5,8 @@ using WebApiProject.Data;
 using WebApiProject.Mappings;
 using WebApiProject.Repositories;
 using WebApiProject.Services;
+using WebApiProject.Repositories.Interface;
+using WebApiProject.Services.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 

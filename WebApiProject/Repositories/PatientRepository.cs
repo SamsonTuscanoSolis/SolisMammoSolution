@@ -2,6 +2,7 @@
 using WebApiProject.Data;
 using WebApiProject.DTOs;
 using WebApiProject.Models;
+using WebApiProject.Repositories.Interface;
 
 namespace WebApiProject.Repositories
 {

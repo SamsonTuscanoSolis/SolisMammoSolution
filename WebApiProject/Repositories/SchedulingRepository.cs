@@ -1,6 +1,7 @@
 ﻿using WebApiProject.Data;
 using WebApiProject.Models;
 using Microsoft.EntityFrameworkCore;
+using WebApiProject.Repositories.Interface;
 
 namespace WebApiProject.Repositories
 {

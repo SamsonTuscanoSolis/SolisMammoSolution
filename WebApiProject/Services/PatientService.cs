@@ -2,7 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using WebApiProject.DTOs;
 using WebApiProject.Models;
-using WebApiProject.Repositories;
+using WebApiProject.Repositories.Interface;
+using WebApiProject.Services.Interface;
 
 namespace WebApiProject.Services
 {

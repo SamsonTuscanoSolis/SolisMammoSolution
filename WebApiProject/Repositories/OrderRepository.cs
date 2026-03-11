@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using WebApiProject.Data;
 using WebApiProject.Models;
+using WebApiProject.Repositories.Interface;
 
 namespace WebApiProject.Repositories
 {

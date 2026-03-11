@@ -1,7 +1,7 @@
 ﻿using WebApiProject.DTOs;
 using WebApiProject.Models;
 
-namespace WebApiProject.Repositories
+namespace WebApiProject.Repositories.Interface
 {
     public interface IPatientRepository
     {

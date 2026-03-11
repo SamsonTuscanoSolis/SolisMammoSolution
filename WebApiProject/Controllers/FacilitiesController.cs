@@ -1,7 +1,7 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using WebApiProject.Services;
+using WebApiProject.Services.Interface;
 
 namespace WebApiProject.Controllers
 {
