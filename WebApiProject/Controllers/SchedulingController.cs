@@ -10,12 +10,12 @@ namespace WebApiProject.Controllers
     [Route("api/v{version:apiVersion}/scheduling")]
     public class SchedulingController : ControllerBase
     {
-        private readonly ISchedulingService _schedulingService;
+        private readonly ISchedulingService _service;
         private readonly ILogger<SchedulingController> _logger;
 
-        public SchedulingController(ISchedulingService schedulingService, ILogger<SchedulingController> logger)
+        public SchedulingController(ISchedulingService service, ILogger<SchedulingController> logger)
         {
-            _schedulingService = schedulingService;
+            _service = service;
             _logger = logger;
         }
 
@@ -25,7 +25,7 @@ namespace WebApiProject.Controllers
         {
             _logger.LogInformation("Fetching available slots for facilityId {FacilityId}, modality {Modality}, examType {ExamType}, from {DateFrom} to {DateTo}", facilityId, modality, examType, dateFrom, dateTo);
 
-            var availableSlots = await _schedulingService.GetAvailableSlotsAsync(facilityId, modality, examType, dateFrom, dateTo, insurancePlanId);
+            var availableSlots = await _service.GetAvailableSlotsAsync(facilityId, modality, examType, dateFrom, dateTo, insurancePlanId);
 
             if (!availableSlots.Any())
             {

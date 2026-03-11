@@ -6,13 +6,13 @@ namespace WebApiProject.Services
 {
     public class SchedulingService : ISchedulingService
     {
-        private readonly ISchedulingRepository _schedulingRepository;
+        private readonly ISchedulingRepository _repository;
         private readonly IMapper _mapper;
         private readonly ILogger<SchedulingService> _logger;
 
-        public SchedulingService(ISchedulingRepository schedulingRepository, IMapper mapper, ILogger<SchedulingService> logger)
+        public SchedulingService(ISchedulingRepository repository, IMapper mapper, ILogger<SchedulingService> logger)
         {
-            _schedulingRepository = schedulingRepository;
+            _repository = repository;
             _mapper = mapper;
             _logger = logger;
         }
@@ -23,7 +23,7 @@ namespace WebApiProject.Services
             {
                 _logger.LogInformation("Fetching available slots from repository");
 
-                var slots = await _schedulingRepository.GetAvailableSlotsAsync(facilityId, modality, examType, dateFrom, dateTo, insurancePlanId);
+                var slots = await _repository.GetAvailableSlotsAsync(facilityId, modality, examType, dateFrom, dateTo, insurancePlanId);
 
                 if (slots == null || !slots.Any())
                 {
