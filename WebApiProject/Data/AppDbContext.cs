@@ -15,6 +15,8 @@ namespace WebApiProject.Data
 
         public DbSet<Order> Orders => Set<Order>();
         public DbSet<OrderItem> OrderItems => Set<OrderItem>();
+
+        public DbSet<Slot> Slots => Set<Slot>();
     }
 
 }
