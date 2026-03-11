@@ -1,31 +1,29 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApiProject.Services;
 
 namespace WebApiProject.Controllers
 {
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/facilities")]
-
     public class FacilitiesController : ControllerBase
     {
-        // GET /api/v1/facilities
+        private readonly IFacilityService _service;
+
+        public FacilitiesController(IFacilityService service)
+        {
+            _service = service;
+        }
+
         [HttpGet]
         public IActionResult GetFacilities()
         {
-            // Sample mock data for facilities
-            var facilities = new[]
-            {
-                new { FacilityId = 1, Name = "City Hospital", Location = "Downtown" },
-                new { FacilityId = 2, Name = "Green Valley Clinic", Location = "Uptown" },
-                new { FacilityId = 3, Name = "Sunrise Medical Center", Location = "Suburbs" }
-            };
+            var facilities = _service.GetFacilities();
 
             if (!facilities.Any())
-            {
-                return NotFound("No facilities found");
-            }
+                return NotFound();
 
             return Ok(facilities);
         }

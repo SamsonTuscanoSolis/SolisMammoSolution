@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApiProject.Services;
 
 namespace WebApiProject.Controllers
 {
@@ -9,24 +10,30 @@ namespace WebApiProject.Controllers
     [Route("api/v{version:apiVersion}/campaigns")]
     public class CampaignsController : ControllerBase
     {
+        private readonly ICampaignService _campaignService;
+        private readonly ILogger<CampaignsController> _logger;
+
+        public CampaignsController(
+            ICampaignService campaignService,
+            ILogger<CampaignsController> logger)
+        {
+            _campaignService = campaignService;
+            _logger = logger;
+        }
+
         // GET /api/v1/campaigns/{campaignId}/eligibility/{patientId}
         [HttpGet("{campaignId}/eligibility/{patientId}")]
-        public IActionResult GetCampaignEligibility(int campaignId, int patientId)
+        public async Task<IActionResult> GetCampaignEligibility(int campaignId, int patientId)
         {
-            // Sample mock data for eligibility
-            var eligibility = new
-            {
-                CampaignId = campaignId,
-                PatientId = patientId,
-                IsEligible = true,
-                Reason = "Patient meets age and medical criteria",
-                CheckedDate = DateTime.UtcNow.ToString("yyyy-MM-dd")
-            };
+            _logger.LogInformation("API called for CampaignId {CampaignId}, PatientId {PatientId}",
+                campaignId, patientId);
 
-            // Return 404 if not eligible (optional)
-            // if (!eligibility.IsEligible) return NotFound("Patient not eligible for this campaign");
+            var result = await _campaignService.GetEligibilityAsync(campaignId, patientId);
 
-            return Ok(eligibility);
+            if (result == null)
+                return NotFound("Eligibility data not found");
+
+            return Ok(result);
         }
     }
 }

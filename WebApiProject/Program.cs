@@ -20,10 +20,15 @@ builder.Services.AddAutoMapper(cfg => { }, typeof(AppointmentProfile).Assembly);
 builder.Services.AddAutoMapper(cfg => { }, typeof(ExamResultProfile).Assembly);
 builder.Services.AddAutoMapper(cfg => { }, typeof(CommunicationProfile).Assembly);
 builder.Services.AddAutoMapper(cfg => { }, typeof(InsuranceProfile).Assembly);
-
+builder.Services.AddAutoMapper(cfg => { }, typeof(FacilityMappingProfile).Assembly);
+builder.Services.AddAutoMapper(cfg => { }, typeof(CampaignProfile).Assembly);
 
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IFacilityRepository, FacilityRepository>();
+builder.Services.AddScoped<IFacilityService, FacilityService>();
+builder.Services.AddScoped<ICampaignRepository, CampaignRepository>();
+builder.Services.AddScoped<ICampaignService, CampaignService>();
 
 builder.Services.AddAutoMapper(cfg => { }, typeof(OrderProfile).Assembly);
 
