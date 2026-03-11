@@ -1,27 +1,45 @@
-﻿using WebApiProject.Models;
+﻿using WebApiProject.Data;
+using WebApiProject.Models;
 using WebApiProject.Repositories.Interface;
 
 namespace WebApiProject.Repositories
 {
     public class FacilityRepository : IFacilityRepository
     {
+        private readonly AppDbContext _context;
+        private readonly ILogger<FacilityRepository> _logger;
+
+        public FacilityRepository(AppDbContext context, ILogger<FacilityRepository> logger)
+        {
+            _context = context;
+            _logger = logger;
+        }
+
         public IEnumerable<Facility> GetFacilities()
         {
-            return new List<Facility>
+            _logger.LogInformation("Fetching facilities from the database.");
+
+            try
             {
-                new Facility
+                // Query the facilities from the database
+                var facilities = _context.Facilities.ToList(); // Assuming Facilities is a DbSet<Facility>
+
+                if (!facilities.Any())
                 {
-                    FacilityId = 1,
-                    Name = "City Hospital",
-                    Address = "123 Main St",
-                    Phone = "555-1234",
-                    Hours = "8AM - 6PM",
-                    ModalitiesAvailable = new List<string>{"MRI","CT Scan"},
-                    AcceptingStatus = true,
-                    Latitude = 40.7128,
-                    Longitude = -74.0060
+                    _logger.LogWarning("No facilities found in the database.");
                 }
-            };
+                else
+                {
+                    _logger.LogInformation("Successfully retrieved {FacilityCount} facility(ies).", facilities.Count);
+                }
+
+                return facilities;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching facilities.");
+                throw; // Rethrow the exception after logging it
+            }
         }
     }
 

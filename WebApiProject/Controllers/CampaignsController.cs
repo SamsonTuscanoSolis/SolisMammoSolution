@@ -10,14 +10,12 @@ namespace WebApiProject.Controllers
     [Route("api/v{version:apiVersion}/campaigns")]
     public class CampaignsController : ControllerBase
     {
-        private readonly ICampaignService _campaignService;
+        private readonly ICampaignService _service;
         private readonly ILogger<CampaignsController> _logger;
 
-        public CampaignsController(
-            ICampaignService campaignService,
-            ILogger<CampaignsController> logger)
+        public CampaignsController(ICampaignService service, ILogger<CampaignsController> logger)
         {
-            _campaignService = campaignService;
+            _service = service;
             _logger = logger;
         }
 
@@ -28,7 +26,7 @@ namespace WebApiProject.Controllers
             _logger.LogInformation("API called for CampaignId {CampaignId}, PatientId {PatientId}",
                 campaignId, patientId);
 
-            var result = await _campaignService.GetEligibilityAsync(campaignId, patientId);
+            var result = await _service.GetEligibilityAsync(campaignId, patientId);
 
             if (result == null)
                 return NotFound("Eligibility data not found");

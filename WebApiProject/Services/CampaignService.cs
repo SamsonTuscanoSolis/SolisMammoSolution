@@ -11,10 +11,7 @@ namespace WebApiProject.Services
         private readonly IMapper _mapper;
         private readonly ILogger<CampaignService> _logger;
 
-        public CampaignService(
-            ICampaignRepository repository,
-            IMapper mapper,
-            ILogger<CampaignService> logger)
+        public CampaignService(ICampaignRepository repository, IMapper mapper, ILogger<CampaignService> logger)
         {
             _repository = repository;
             _mapper = mapper;

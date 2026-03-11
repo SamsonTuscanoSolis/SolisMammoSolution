@@ -11,10 +11,7 @@ namespace WebApiProject.Services
         private readonly IMapper _mapper;
         private readonly ILogger<FacilityService> _logger;
 
-        public FacilityService(
-            IFacilityRepository repository,
-            IMapper mapper,
-            ILogger<FacilityService> logger)
+        public FacilityService(IFacilityRepository repository, IMapper mapper, ILogger<FacilityService> logger)
         {
             _repository = repository;
             _mapper = mapper;

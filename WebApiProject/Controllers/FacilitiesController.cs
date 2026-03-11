@@ -11,21 +11,37 @@ namespace WebApiProject.Controllers
     public class FacilitiesController : ControllerBase
     {
         private readonly IFacilityService _service;
+        private readonly ILogger<FacilitiesController> _logger;
 
-        public FacilitiesController(IFacilityService service)
+        public FacilitiesController(IFacilityService service, ILogger<FacilitiesController> logger)
         {
             _service = service;
+            _logger = logger;
         }
 
         [HttpGet]
         public IActionResult GetFacilities()
         {
-            var facilities = _service.GetFacilities();
+            _logger.LogInformation("Fetching list of facilities.");
 
-            if (!facilities.Any())
-                return NotFound();
+            try
+            {
+                var facilities = _service.GetFacilities();
 
-            return Ok(facilities);
+                if (!facilities.Any())
+                {
+                    _logger.LogWarning("No facilities found.");
+                    return NotFound();
+                }
+
+                _logger.LogInformation("Successfully retrieved {FacilityCount} facility(ies).", facilities.Count());
+                return Ok(facilities);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving facilities.");
+                return StatusCode(500, "An unexpected error occurred.");
+            }
         }
     }
 }
