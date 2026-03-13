@@ -1,4 +1,6 @@
-﻿namespace WebApiProject.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace WebApiProject.Models
 {
     //public class ExamResult
     //{
@@ -26,7 +28,7 @@
         public DateTime? ResultDate { get; set; }
 
         public DateTime CreatedDate { get; set; }
-
+        [NotMapped]
         public Patient Patient { get; set; }
     }
 }

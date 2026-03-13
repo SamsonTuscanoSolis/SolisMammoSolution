@@ -1,4 +1,6 @@
-﻿namespace WebApiProject.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace WebApiProject.Models
 {
     public class Appointment
     {
@@ -45,6 +47,7 @@
         public DateTime CreatedDate { get; set; }
 
         // Navigation property
+        [NotMapped]
         public Patient Patient { get; set; }
     }
 }
